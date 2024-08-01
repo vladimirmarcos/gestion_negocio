@@ -1,70 +1,74 @@
-import tkinter as tk
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
-from basic.basic import BasicMethods
-from new_supplier import AddNewSupplier
+#from login import LoginScreen
+from create_user_form import CreateUserForm
+from modify_user_form import ModifyUserForm
+from add_drugs_form import AdddrugsForm
+from view_drugs_form import ViewdrugsForm
+from add_provider_form import AddProviderForm
 
-class AdminMenu(BasicMethods):
+class AdminMenu:
     def __init__(self, root, login_screen):
         self.root = root
         self.login_screen = login_screen
         self.frame = None
-        self.create_widgets()
+        self.create_menu()
+        self.show_main_menu()
 
-    def create_widgets(self):
+    def create_menu(self):
         self.menu_bar = ttk.Menu(self.root)
-
-        self.file_menu = ttk.Menu(self.menu_bar, tearoff=0)
-        self.file_menu.add_command(label="Cerrar Sesión", command=self.logout)
-        self.menu_bar.add_cascade(label="Archivo", menu=self.file_menu)
-
-        self.user_menu = ttk.Menu(self.menu_bar, tearoff=0)
-        self.user_menu.add_command(label="Crear Usuario", command=self.show_create_user_form)
-        self.user_menu.add_command(label="Modificar/Eliminar Usuario", command=self.show_modify_user_form)
-        self.menu_bar.add_cascade(label="Usuarios", menu=self.user_menu)
-
-        self.stock_menu = ttk.Menu(self.menu_bar, tearoff=0)
-        self.stock_menu.add_command(label="Agregar Stock", command=self.show_add_stock_form)
-        self.stock_menu.add_command(label="Ver Stock", command=self.show_view_stock_form)
-        self.menu_bar.add_cascade(label="Stock", menu=self.stock_menu)
-
-        self.client_supplier_stock = ttk.Menu(self.menu_bar, tearoff=0)
-        self.client_supplier_stock.add_command(label="Crear Nuevo Proveedor", command=self.show_create_new_supplier)
-        self.client_supplier_stock.add_command(label="Ver Stock", command=self.show_view_stock_form)
-        self.menu_bar.add_cascade(label="Cliente/Provedores", menu=self.client_supplier_stock)
-
         self.root.config(menu=self.menu_bar)
 
-        
+        self.user_menu = ttk.Menu(self.menu_bar, tearoff=0)
+        self.menu_bar.add_cascade(label="Usuario", menu=self.user_menu)
+        self.user_menu.add_command(label="Agregar Usuario", command=self.show_add_user_form)
+        #self.user_menu.add_command(label="Modificar/Eliminar Usuario", command=self.show_modify_user_form)
+        self.user_menu.add_separator()
+        self.user_menu.add_command(label="Cerrar Sesión", command=self.logout)
 
-    
-        
+        self.drugs_menu = ttk.Menu(self.menu_bar, tearoff=0)
+        self.menu_bar.add_cascade(label="Drogas", menu=self.drugs_menu)
+        self.drugs_menu.add_command(label="Agregar Droga", command=self.show_add_drugs_form)
+        self.drugs_menu.add_command(label="Ver Drogas", command=self.show_view_drugs_form)
 
-    def logout(self):
-        self.delete_frame(self.frame)
-        self.menu_bar.destroy()
-        self.login_screen.show_login_screen()
+        self.provider_menu = ttk.Menu(self.menu_bar, tearoff=0)
+        self.menu_bar.add_cascade(label="Proveedor", menu=self.provider_menu)
+        self.provider_menu.add_command(label="Agregar Proveedor", command=self.show_add_provider_form)
 
-    def show_create_user_form(self):
-        self.delete_frame(self.frame)
-        from create_user_form import CreateUserForm
+    def show_main_menu(self):
+        self.clear_frame()
+        self.frame = ttk.Frame(self.root, padding=20)
+        self.frame.pack(pady=100)
+
+        self.label = ttk.Label(self.frame, text="Admin Menu", font=("Helvetica", 24))
+        self.label.pack(pady=20)
+
+    def clear_frame(self):
+        if self.frame:
+            self.frame.destroy()
+        self.frame = ttk.Frame(self.root)
+        self.frame.pack()
+
+    def show_add_user_form(self):
+        self.clear_frame()
         CreateUserForm(self.frame)
 
     def show_modify_user_form(self):
-        self.delete_frame(self.frame)
-        from modify_user_form import ModifyUserForm
+        self.clear_frame()
         ModifyUserForm(self.frame)
 
-    def show_add_stock_form(self):
-        self.delete_frame(self.frame)
-        from add_stock_form import AddStockForm
-        AddStockForm(self.frame)
+    def show_add_drugs_form(self):
+        self.clear_frame()
+        AdddrugsForm(self.frame)
 
-    def show_view_stock_form(self):
-        self.delete_frame(self.frame)
-        from view_stock_form import ViewStockForm
-        ViewStockForm(self.frame)
+    def show_view_drugs_form(self):
+        self.clear_frame()
+        ViewdrugsForm(self.frame)
 
-    def show_create_new_supplier(self):
-        self.delete_frame(self.frame)
-        AddNewSupplier(self.frame)
+    def show_add_provider_form(self):
+        self.clear_frame()
+        AddProviderForm(self.frame)
+
+    def logout(self):
+        self.clear_frame()
+        self.login_screen.show_login_screen()

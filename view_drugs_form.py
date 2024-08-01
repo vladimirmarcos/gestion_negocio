@@ -12,7 +12,7 @@ STOCK_DATA = [
     # Agrega más datos según sea necesario
 ]
 
-class ViewStockForm:
+class ViewdrugsForm:
     def __init__(self, parent_frame):
         self.parent_frame = parent_frame
         self.create_widgets()

@@ -1,8 +1,8 @@
 import ttkbootstrap as ttk
 from tkinter import messagebox
-from db import update_password, user_exists
-from basic.basic import BasicMethods
-class ForgotPasswordScreen(BasicMethods):
+from connect.account import update_password, user_exists
+from basic.basic import clear_entry
+class ForgotPasswordScreen:
     """_summary_
     """    
     def __init__(self, root, login_screen):
@@ -51,12 +51,12 @@ class ForgotPasswordScreen(BasicMethods):
         """        
         if not self.entry_forgot_username.get():
             messagebox.showerror("Error", "Por favor ingrese el nombre de usuario.")
-            self.clear_entry(self.frame_forgot)
+            clear_entry(self.frame_forgot)
         else:
             if user_exists( self.entry_forgot_username.get()):
                 if not (self.entry_new_password.get() and self.entry_confirm_password.get()):
                         messagebox.showerror("Error", "Tiene ambos campos de contraseñas vacías.")
-                        self.clear_entry(self.frame_forgot)
+                        clear_entry(self.frame_forgot)
                 else:   
                  if self.entry_new_password.get() == self.entry_confirm_password.get():
                     if update_password( self.entry_forgot_username.get(), self.entry_new_password.get()):
@@ -64,13 +64,13 @@ class ForgotPasswordScreen(BasicMethods):
                         self.back_to_login()
                     else:
                         messagebox.showerror("Error", "No se pudo actualizar la contraseña.")
-                        self.clear_entry(self.frame_forgot)
+                        clear_entry(self.frame_forgot)
                  else:
                     messagebox.showerror("Error", "Las contraseñas no coinciden. Inténtelo de nuevo.")
-                    self.clear_entry(self.frame_forgot)
+                    clear_entry(self.frame_forgot)
             else:
                 messagebox.showerror("Error", f"Usuario {self.entry_forgot_username.get()} no existe.")
-                self.clear_entry(self.frame_forgot)
+                clear_entry(self.frame_forgot)
 
     def back_to_login(self):
         self.frame_forgot.destroy()
